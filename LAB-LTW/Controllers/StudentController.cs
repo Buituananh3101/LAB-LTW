@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LAB_LTW.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using LAB_LTW.Models;
 
 namespace LAB_LTW.Controllers
 {
+
     public class StudentController : Controller
     {
         //------------------------------: Khai báo biến :------------------------------
@@ -25,12 +27,12 @@ namespace LAB_LTW.Controllers
 
         //------------------------------: Action methods :------------------------------: Hiển thị và thêm sinh viên --> luồng như sau: 
                                                                                           // Khi vào gọi controller/action = student/index
-        // GET: /Student/Index --> gọi view Index                                         // --> Hiển thị bảng có bấm nút "Thêm sinh viên", ấn nút
-        public IActionResult Index()                                                      // 
-        {                                                                                 //  
-            return View(Liststudents);
-        }
-
+        // GET: /Student/Index --> gọi view Index                                         // --> Hiển thị bảng có link giả nút "Thêm sinh viên", ấn nút
+        public IActionResult Index()                                                      // --> Gọi action Create GET của controller hiện tại (được cấu hình như dưới) (tức là hàm ngay dưới hàm này)
+        {                                                                                 // < a asp - action = "Create" class="btn btn-primary">Create Student</a>
+            return View(Liststudents);                                                    // --> action create GET sẽ chuẩn bị gender, branch và gọi View --> hiển thị form
+        }                                                                                 // Trong view, nhập form --> ấn nút gửi
+                                                                                          // --> Gọi action create POST --> add và list --> gọi view index (gọi thẳng luôn, ko quay lại hàm bên trái nữa)
         // GET: /Student/Create --> gọi view Create
         [HttpGet]
         public IActionResult Create()
