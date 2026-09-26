@@ -14,9 +14,9 @@ namespace LAB_LTW.Controllers
 
         //------------------------------: Constructor   :------------------------------
 
-        public StudentController() // Constructor khởi tạo, được gọi k
-        {
-            Liststudents = new List<Student>()
+        public StudentController() // Constructor khởi tạo, được gọi k ---> ở đây có 1 lỗi: Khi thêm sinh viên thì nó mặc định gọi contructor này
+        {                                                                                // Mặc định 4sv --< nhập form --> 5sv
+            Liststudents = new List<Student>()                                           // Thêm 1 sv nữa --> nó sẽ gọi contractor --> từ 5sv về lại 4dv --> khi thêm sv6 thì nó sẽ giống như ghi đè lên sv5
             {
                 new Student() { Id = 1, Name = "Nguyen Van A", Email = "nguyenvana@example.com", Password = "password1", Branch = Branch.IT, Gender = Gender.Male, IsRegular = true, Address = "123 Street, City", DateOfBorth = new DateTime(2000, 1, 1) },
                 new Student() { Id = 2, Name = "Tran Thi B", Email = "tranthib@example.com", Password = "password2", Branch = Branch.BE, Gender = Gender.Female, IsRegular = false, Address = "456 Avenue, City", DateOfBorth = new DateTime(2001, 2, 2) },
