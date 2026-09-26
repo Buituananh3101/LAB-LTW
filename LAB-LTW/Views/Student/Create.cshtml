@@ -15,8 +15,7 @@
         ASP.NET Core tự động ghép các giá trị từ form vào đối tượng s; việc này gọi là model binding
     *@ 
     @*<form asp-controller="Student" asp-action="Create" method="post"> --------> link cũ*@
-    <form asp-route="StudentAddPost" method="post">
-
+    <form asp-controller="Student" asp-action="Create" method="post" enctype="multipart/form-data"> @* Thêm enctype *@
     @* 
     Cách 1: HTML thuần 
     <form action="/Admin/Student/Add" method="post">
@@ -27,6 +26,19 @@
         Cách 3: Gọi route POST theo tên 
     <form asp-route="StudentAddPost" method="post">
     *@
+
+        <!-- Thêm ảnh đại diện -->
+        <div class="row mb-3">
+            <label for="avatar" class="col-sm-2 col-form-label">Ảnh đại diện</label>
+            <div class="col-sm-10">
+                <input type="file"
+                       id="avatar"
+                       name="avatar"                    @* name="avatar" phải khớp với tham số IFormFile? avatar ở bước sau. *@
+                       accept=".jpg,.jpeg,.png,.webp"
+                       class="form-control" />
+                <span class="text-danger">@Html.ValidationMessage("avatar")</span>
+            </div>
+        </div>
 
         <!-- Họ tên -->
         <div class="row mb-3 align-items-center">
@@ -59,7 +71,7 @@
             <label asp-for="Branch" class="col-sm-2 col-form-label">Ngành học</label>
             <div class="col-sm-10">
                 <select asp-for="Branch" class="form-select"
-                        asp-items="@(ViewBag.AllBranches as IEnumerable<SelectListItem>)"> @* hoặc asp-items="Html.GetEnumSelectList<Branch>()"> *@
+                        asp-items="Html.GetEnumSelectList<Branch>()">  @* hoặc  asp-items="@(ViewBag.AllBranches as IEnumerable<SelectListItem>)">*@
                     <option value="">-- Chọn ngành học --</option>
                 </select>
                 

@@ -11,5 +11,7 @@
         public bool IsRegular { get; set; }     // true: chính quy; false: phi chính quy
         public string? Address { get; set; }     // Địa chỉ
         public DateTime DateOfBorth { get; set; } // Ngày sinh
+
+        public string? AvatarUrl { get; set; }
     }
 }

@@ -30,6 +30,7 @@ Cách 3: Gọi route theo tên
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>Ảnh</th>
             <th>Mã</th>
             <th>Họ tên</th>
             <th>Ngày sinh</th>
@@ -44,6 +45,13 @@ Cách 3: Gọi route theo tên
         @foreach(var s in Model)
         {
             <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(s.AvatarUrl))
+                    {
+                        <img src="@s.AvatarUrl" alt="Ảnh của @s.Name" width="60" height="60" />
+                    }
+                </td>
+
                 <td>@s.Id</td>
                 <td>@s.Name</td>
                 <td>@s.DateOfBorth</td>
