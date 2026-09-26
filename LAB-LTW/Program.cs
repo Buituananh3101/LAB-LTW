@@ -25,6 +25,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-app.MapControllers(); // Thêm cái này khi dùng asp-route 
-
 app.Run();
