@@ -29,7 +29,7 @@ namespace LAB_LTW.Controllers
         //------------------------------: Action methods :------------------------------: Hiển thị và thêm sinh viên --> luồng như sau: 
         // Khi vào gọi controller/action = student/index
         // GET: /Student/Index --> gọi view Index                                         // --> Hiển thị bảng có link giả nút "Thêm sinh viên", ấn nút
-        [HttpGet("List", Name = "StudentList")]
+        [HttpGet("List")]
         public IActionResult Index()                                                      // --> Gọi action Create GET của controller hiện tại (được cấu hình như dưới) (tức là hàm ngay dưới hàm này)
         {                                                                                 // < a asp - action = "Create" class="btn btn-primary">Create Student</a>
             return View(Liststudents);                                                    // --> action create GET sẽ chuẩn bị gender, branch và gọi View --> hiển thị form
@@ -37,7 +37,7 @@ namespace LAB_LTW.Controllers
                                                                                           // --> Gọi action create POST --> add và list --> gọi view index (gọi thẳng luôn, ko quay lại hàm bên trái nữa)
                                                                                           // GET: /Student/Create --> gọi view Create
         // [HttpGet] sửa thành
-        [HttpGet("Add", Name = "StudentAdd")] // URL lúc này là Admin/Student/List, Name là tên route để dùng với asp-route.
+        [HttpGet("Add")] // URL lúc này là Admin/Student/List, Name là tên route để dùng với asp-route.
         public IActionResult Create()
         {
             // Chuẩn bị danh sách giới tính
@@ -71,7 +71,7 @@ namespace LAB_LTW.Controllers
                                      // Khi user điền form rồi bấm nút gửi, form được cấu hình như dưới để gọi phương thức này 
                                      // <form asp-controller="Student" asp-action="Create" method="post"> (mở view/Student/Create để hiểu cơ chế model binding)
         // [HttpPost] sửa thành
-        [HttpPost("Add", Name = "StudentAddPost")] // URL lúc này là Admin/Student/Add, Name = "StudentAdd" để đặt tên cho route này, dùng trong view/Student/Index.cshtml
+        [HttpPost("Add")] // URL lúc này là Admin/Student/Add, Name = "StudentAdd" để đặt tên cho route này, dùng trong view/Student/Index.cshtml
         public IActionResult create(Student s)
         {
             s.Id = Liststudents.Last<Student>().Id + 1; // Tạo Id mới bằng cách lấy Id của sinh viên cuối cùng trong danh sách và cộng thêm 1
