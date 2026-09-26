@@ -10,7 +10,22 @@
    2:
    không ghi thuộc tính HTTP mặc định là GET
 *@
-<a asp-action="Create" class="btn btn-primary">Create Student</a>
+
+@* <a asp-action="Create" class="btn btn-primary">Create Student</a> ---------> chưa sửa route*@
+
+<a asp-route="StudentAdd" class="btn btn-primary">Create Student</a>
+
+
+@* 
+Cách 1: HTML thuần 
+<a href="/Admin/Student/Add" class="btn btn-primary">Create Student</a>
+
+Cách 2: Gọi action theo tên 
+<a asp-controller="Student" asp-action="Create" class="btn btn-primary">Create Student</a>
+
+Cách 3: Gọi route theo tên 
+<a asp-route="StudentAdd" class="btn btn-primary">Create Student</a>
+*@
 
 <table class="table table-striped">
     <thead>

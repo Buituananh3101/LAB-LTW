@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LAB_LTW.Controllers
 {
-
+    // Sửa từ mặc đinh [Route("Student")] thành
+    [Route("Admin/Student")]
     public class StudentController : Controller
     {
         //------------------------------: Khai báo biến :------------------------------
@@ -34,7 +35,8 @@ namespace LAB_LTW.Controllers
         }                                                                                 // Trong view, nhập form --> ấn nút gửi
                                                                                           // --> Gọi action create POST --> add và list --> gọi view index (gọi thẳng luôn, ko quay lại hàm bên trái nữa)
         // GET: /Student/Create --> gọi view Create
-        [HttpGet]
+        // [HttpGet] sửa thành
+        [HttpGet("List", Name = "StudentList")] // URL lúc này là Admin/Student/List, Name là tên route để dùng với asp-route.
         public IActionResult Create()
         {
             // Chuẩn bị danh sách giới tính
@@ -67,7 +69,8 @@ namespace LAB_LTW.Controllers
         // POST: /Student/Create --> nhận dữ liệu từ form Create + thêm sinh viên mới vào danh sách
                                      // Khi user điền form rồi bấm nút gửi, form được cấu hình như dưới để gọi phương thức này 
                                      // <form asp-controller="Student" asp-action="Create" method="post"> (mở view/Student/Create để hiểu cơ chế model binding)
-        [HttpPost]
+        // [HttpPost] sửa thành
+        [HttpGet("Add", Name = "StudentAdd")] // URL lúc này là Admin/Student/Add, Name = "StudentAdd" để đặt tên cho route này, dùng trong view/Student/Index.cshtml
         public IActionResult create(Student s)
         {
             s.Id = Liststudents.Last<Student>().Id + 1; // Tạo Id mới bằng cách lấy Id của sinh viên cuối cùng trong danh sách và cộng thêm 1

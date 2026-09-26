@@ -14,7 +14,19 @@
 
         ASP.NET Core tự động ghép các giá trị từ form vào đối tượng s; việc này gọi là model binding
     *@ 
-    <form asp-controller="Student" asp-action="Create" method="post"> 
+    @*<form asp-controller="Student" asp-action="Create" method="post"> --------> link cũ*@
+    <form asp-route="StudentAddPost" method="post">
+
+    @* 
+    Cách 1: HTML thuần 
+    <form action="/Admin/Student/Add" method="post">
+
+        Cách 2: Gọi action theo tên 
+    <form asp-controller="Student" asp-action="Create" method="post">
+
+        Cách 3: Gọi route POST theo tên 
+    <form asp-route="StudentAddPost" method="post">
+    *@
 
         <!-- Họ tên -->
         <div class="row mb-3 align-items-center">
