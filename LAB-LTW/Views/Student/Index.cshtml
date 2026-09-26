@@ -1,5 +1,15 @@
 ﻿@model IEnumerable<Student>
 
+@* Đây là đường dẫn giả nút :)) ko phải nút thật
+   --> Bấm nút sẽ mở action GET Create của controller hiện tại
+    
+   Vì 2 lí do:
+   1: 
+   <a> là liên kết 
+   --> Khi bạn bấm vào, trình duyệt mặc định gửi yêu cầu GET để mở địa chỉ của liên kết
+   2:
+   không ghi thuộc tính HTTP mặc định là GET
+*@
 <a asp-action="Create" class="btn btn-primary">Create Student</a>
 
 <table class="table table-striped">
@@ -22,25 +32,19 @@
                 <td>@s.Id</td>
                 <td>@s.Name</td>
                 <td>@s.DateOfBorth</td>
+
                 @{
                     string str = "";
                     switch(s.Branch)
                     {
-                        case Branch.IT:
-                            str="CNTT";
-                            break;
-                        case Branch.BE:
-                            str="Kinh tế";
-                            break;
-                        case Branch.CE:
-                            str = "Công trình";
-                            break;
-                        case Branch.EE:
-                            str = "Điện - Điện tử";
-                            break;
+                        case Branch.IT: str= "CNTT";           break;
+                        case Branch.BE: str= "Kinh tế";        break;
+                        case Branch.CE: str = "Công trình";    break;
+                        case Branch.EE: str = "Điện - Điện tử";break;
                     }
                 }
                 <td>@str</td>
+
                 <td>@(s.Gender==Gender.Male? "Nam": "Nữ")</td>
                 <td>@(s.IsRegular ? "Chính quy": "Phi chính quy")</td>
                 <td>@s.Address</td>

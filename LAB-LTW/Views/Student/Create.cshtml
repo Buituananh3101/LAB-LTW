@@ -1,0 +1,118 @@
+﻿@model Student // View này dùng model nào? --> có thể viết asp-for="Name" để liên kết từng ô nhập với thuộc tính tương ứng của Student.
+
+<div class="container mt-4">
+
+    @* ----------------------------------------------------------------------------------------------: Form gửi dữ liệu đi đâu? 
+
+       Khi ấn nút submit, form gửi request POST đến action Create của StudentController.
+
+        [HttpPost]
+        public IActionResult Create(Student s)
+        {
+            // s.Name, s.Email, s.Branch... chứa dữ liệu từ form
+        }
+
+        ASP.NET Core tự động ghép các giá trị từ form vào đối tượng s; việc này gọi là model binding
+    *@ 
+    <form asp-controller="Student" asp-action="Create" method="post"> 
+
+        <!-- Họ tên -->
+        <div class="row mb-3 align-items-center">
+            @* -------------------------------------------------------------------------------------: asp-for và input làm gì?
+
+               asp-for="Name" dùng để liên kết đên ô input với thuộc tính tương ứng của Student.
+            *@
+            <label asp-for="Name" class="col-sm-2 col-form-label">Họ tên</label>    
+            <div class="col-sm-10"> <input asp-for="Name" class="form-control" placeholder="Nhập họ và tên" /> </div>
+        </div>
+
+        <!-- Email -->
+        <div class="row mb-3 align-items-center">
+            <label asp-for="Email" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10"> <input asp-for="Email" type="email" class="form-control" placeholder="name@example.com" /> </div>
+        </div>
+
+        <!-- Mật khẩu -->
+        <div class="row mb-3 align-items-center">
+            <label asp-for="Password" class="col-sm-2 col-form-label">Mật khẩu</label>
+            <div class="col-sm-10"> <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu" /> </div>
+        </div>
+
+        <!-- Ngành học -->
+        <div class="row mb-3 align-items-center">
+            @* -------------------------------------------------------------------------------------: asp-for và select( danh sách thả xuống) làm gì?
+
+               asp-for="Branch" dùng để liên kết đên ô select với thuộc tính tương ứng của Student.
+            *@
+            <label asp-for="Branch" class="col-sm-2 col-form-label">Ngành học</label>
+            <div class="col-sm-10">
+                <select asp-for="Branch" class="form-select"
+                        asp-items="@(ViewBag.AllBranches as IEnumerable<SelectListItem>)"> @* hoặc asp-items="Html.GetEnumSelectList<Branch>()"> *@
+                    <option value="">-- Chọn ngành học --</option>
+                </select>
+                
+            </div>
+        </div>
+
+        <!-- Hệ đào tạo -->
+        <div class="row mb-3 align-items-center">
+            @* -------------------------------------------------------------------------------------: asp-for và checkbox làm gì?
+
+               asp-for="IsRegular" dùng để liên kết đên ô checkbox với thuộc tính tương ứng của Student.
+            *@
+            <label class="col-sm-2 col-form-label">Hệ đào tạo</label>
+            <div class="col-sm-10">
+                <div class="form-check">
+                    <input asp-for="IsRegular" class="form-check-input" type="checkbox" id="IsRegular" />
+                    <label class="form-check-label" for="IsRegular"> Chính  </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ngày sinh -->
+        <div class="row mb-3 align-items-center">
+            <label asp-for="DateOfBorth" class="col-sm-2 col-form-label">Ngày sinh</label>
+            <div class="col-sm-10"> <input asp-for="DateOfBorth" type="date" class="form-control" /> </div>
+        </div>
+
+        <!-- Giới tính -->
+        <div class="row mb-3 align-items-center">
+            @* -------------------------------------------------------------------------------------: asp-for và radio button làm gì?
+
+               asp-for="Gender" dùng để liên kết đên ô radio button với thuộc tính tương ứng của Student.
+            *@
+            <label asp-for="Gender" class="col-sm-2 col-form-label">Giới tính</label>
+            <div class="col-sm-10 d-flex gap-3">
+                @foreach (var gender in ViewBag.AllGenders)
+                {
+                    <div class="form-check">
+                        <input asp-for="Gender"
+                               type="radio"
+                               value="@gender"
+                               id="Gender_@gender"
+                               class="form-check-input" />
+                        <label class="form-check-label" for="Gender_@gender">@gender</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Địa chỉ -->
+        <div class="row mb-3">
+			@* -------------------------------------------------------------------------------------: asp-for và textarea làm gì?
+
+               asp-for="Address" dùng để liên kết đên ô textarea với thuộc tính tương ứng của Student.
+
+            *@
+            <label asp-for="Address" class="col-sm-2 col-form-label">Địa chỉ</label>
+            <div class="col-sm-10"> <textarea asp-for="Address" class="form-control" rows="3" placeholder="Nhập địa chỉ"></textarea> </div>
+        </div>
+
+        <!-- Nút submit -->
+        <div class="row mb-3">
+            <div class="col-sm-10 offset-sm-2">
+                <button type="submit" class="btn btn-primary px-4">Tạo mới</button>
+            </div>
+        </div>
+    </form>
+</div>
