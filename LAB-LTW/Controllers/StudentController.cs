@@ -32,7 +32,7 @@ namespace LAB_LTW.Controllers
         {                                                                                 // < a asp - action = "Create" class="btn btn-primary">Create Student</a>
             return View(Liststudents);                                                    // --> action create GET sẽ chuẩn bị gender, branch và gọi View --> hiển thị form
         }                                                                                 // Trong view, nhập form --> ấn nút gửi
-                                                                                          // --> Gọi action create POST --> add và list --> gọi view index (gọi thẳng luôn, ko quay lại hàm bên trái nữa)
+                                                                                          // --> Gọi action create POST --> add vào list --> gọi view index (gọi thẳng luôn, ko quay lại hàm bên trái nữa)
         // GET: /Student/Create --> gọi view Create
         [HttpGet]
         public IActionResult Create()
