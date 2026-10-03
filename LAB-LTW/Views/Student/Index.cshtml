@@ -81,3 +81,16 @@ Cách 3: Gọi route theo tên
         }
     </tbody>
 </table>
+
+@section Scripts
+{
+    <script>
+        // Lấy bảng đầu tiên trong trang.
+        var table = document.querySelector("table");
+
+        // Khi bấm vào bảng, đổi nền thành màu vàng.
+        table.onclick = function onTableClick() {
+            table.style.backgroundColor = "yellow";
+        };
+    </script>
+}
