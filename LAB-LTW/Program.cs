@@ -28,3 +28,8 @@ app.MapControllerRoute(
 app.Run();
 
 // branch base on: lab1/main-route-uploadimage
+
+// 1. Tao 1 view MyLayout moi
+// 2. copy file index thay cho vao 
+// 3. keo css js vao
+// 4. sua duong dan css js trong view vua tao
