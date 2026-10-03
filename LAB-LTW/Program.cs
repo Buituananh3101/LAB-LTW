@@ -36,3 +36,8 @@ app.Run();
 // 5. sua _ViewStart.cshtml de su dung view layout moi 
 
 // 6. Dùng render section --> khi an vao list hien thi thi no chuyen sang mau vang :) --> chac chi de test code
+
+// 7. Them Model MenuItem
+// 8. Tao thu muc ViewComponents --> Tao class RenderViewComponents
+// 9. Tao View duoc goi boi ViewComponent --> Tao thu muc Components --> Tao thu muc Render --> tao view RenderLeftMenu --> copy code tu LeftMenu sang RenderLeftMenu + them "@model = IEnumerable<MenuItem>" vao dau --> Render danh sach menuItem bang foreach
+// 10. Tao view MyLayoutHelper --> copy code tu MyLayout sang MyLayoutHelper --> Thay <partial name="LeftMenu" /> ----> @await Component.InvokeAsync("Render")
