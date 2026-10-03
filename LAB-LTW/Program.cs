@@ -33,3 +33,5 @@ app.Run();
 // 2. copy file index thay cho vao 
 // 3. keo css js vao
 // 4. sua duong dan css js trong view vua tao
+// 5. sua _ViewStart.cshtml de su dung view layout moi 
+// 

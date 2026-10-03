@@ -1,4 +1,9 @@
-﻿@model IEnumerable<Student>
+﻿@{
+    ViewData["Title"] = "Danh sách sinh viên";
+    Layout = "~/Views/Shared/MyLayout.cshtml";
+}
+
+@model IEnumerable<Student>
 
 @* Đây là đường dẫn giả nút :)) ko phải nút thật
    --> Bấm nút sẽ mở action GET Create của controller hiện tại
@@ -13,7 +18,7 @@
 
 @* <a asp-action="Create" class="btn btn-primary">Create Student</a> ---------> chưa sửa route*@
 
-<a asp-route="StudentAdd" class="btn btn-primary">Create Student</a>
+<div class="mb-3"> <a asp-route="StudentAdd" class="btn btn-primary">Create Student</a> </div> @*Thêm khối div để nút nó ko kéo dài full trang*@
 
 
 @* 
