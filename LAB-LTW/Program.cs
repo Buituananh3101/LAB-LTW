@@ -43,7 +43,7 @@ app.MapControllerRoute(
 
 app.Run();
 
-// branch base on: lab3/main 
+// branch base on: lab4/main-codefirst
 
 // 1. Tao 1 view MyLayout moi
 // 2. copy file index thay cho vao 

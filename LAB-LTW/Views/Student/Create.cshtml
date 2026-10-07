@@ -1,4 +1,11 @@
-﻿@model Student // View này dùng model nào? --> có thể viết asp-for="Name" để liên kết từng ô nhập với thuộc tính tương ứng của Student.
+﻿@{
+    ViewData["Title"] = "Thêm sinh viên";
+    // Layout = "~/Views/Shared/MyLayout.cshtml";
+    Layout = "~/Views/Shared/MyLayoutHelper.cshtml";
+}
+
+
+@model Student // View này dùng model nào? --> có thể viết asp-for="Name" để liên kết từng ô nhập với thuộc tính tương ứng của Student.
 
 <div class="container mt-4">
 
