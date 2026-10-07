@@ -86,8 +86,9 @@ namespace LAB_LTW.Controllers
         [HttpPost("Add", Name = "StudentAddPost")]
         public async Task<IActionResult> Create(Student s, IFormFile? avatar)
         {
-            
-            
+            //------------------------------: Xử lý upload ảnh :------------------------------: begin
+
+
             if (avatar != null && avatar.Length > 0)                                      // Chỉ xử lý khi người dùng đã chọn file và file không rỗng.
             {                                                                             // Nếu không chọn ảnh, bỏ qua toàn bộ khối này.
 
@@ -139,9 +140,40 @@ namespace LAB_LTW.Controllers
             // còn URL để hiển thị là               /uploads/students/abc.png.
             // Một điểm cần nhớ: đoạn kiểm tra.png, .jpg mới kiểm tra đuôi tên file -----> chưa xác minh nội dung bên trong thật sự là ảnh.
 
-            s.Id = Liststudents.Last().Id + 1;
-            Liststudents.Add(s);
-            return View("Index", Liststudents);
+            //------------------------------: Xử lý upload ảnh :------------------------------: end
+
+            // Chuẩn bị lại danh sách giới tính
+            // Enum.GetValues(...) Lấy tất cả giá trị trong enum: Male, Female
+            ViewBag.AllGenders = Enum.GetValues(typeof(Gender)) // typeof(Gender)      Lấy thông tin về kiểu Gender
+                                     .Cast<Gender>()            // .Cast<Gender>()     Chuyển từng phần tử sang kiểu Gender
+                                     .ToList();                 // .ToList()           Tạo danh sách List<Gender>
+                                                                // ViewBag.AllGenders = ... ----> Gửi danh sách này sang View
+
+            // kết quả tương đương:
+            // ViewBag.AllGenders = new List<Gender>
+            // {
+            //     Gender.Male,
+            //     Gender.Female
+            // };
+
+            // Chuẩn bị lại danh sách ngành học
+
+            ViewBag.AllBranches = new List<SelectListItem>()    // SelectListItem biểu diễn một lựa chọn trong ô chọn thả xuống:
+            {
+                new SelectListItem { Value = "1", Text = "IT" },// Text: chữ người dùng nhìn thấy.
+                new SelectListItem { Value = "2", Text = "CE" },// Value: giá trị gửi về server khi chọn.
+                new SelectListItem { Value = "3", Text = "BE" },
+                new SelectListItem { Value = "4", Text = "EE" } // Tương ứng HTML:
+            };                                                  // <option value="1">IT</option>
+
+
+            if (ModelState.IsValid) // lab3
+            {
+                s.Id = Liststudents.Last().Id + 1;
+                Liststudents.Add(s);
+                return View("Index", Liststudents);
+            }
+            return View(s); // Nếu dữ liệu không hợp lệ, trả lại form Create với dữ liệu đã nhập và thông báo lỗi.
         }
 
 
