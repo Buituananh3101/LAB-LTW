@@ -82,7 +82,7 @@ namespace LAB_LTW.Controllers
         //                                                // Dòng này không gọi lại action Index(); nó trực tiếp hiển thị View có tên "Index".
         //}
 
-
+        // Là cái hàm bị comment bên trên, tuy nhiên hàm dưới này được thêm code phần upload ảnh
         [HttpPost("Add", Name = "StudentAddPost")]
         public async Task<IActionResult> Create(Student s, IFormFile? avatar)
         {
