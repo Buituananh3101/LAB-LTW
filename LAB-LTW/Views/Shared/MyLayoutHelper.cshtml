@@ -37,7 +37,8 @@
     <script src="~/js/js/scripts.js"></script>
     
     @*
-        required: false nghĩa là trang nào không có section, Scripts vẫn chạy bình thường.
+        "Nếu trang con có section tên là Scripts, hãy lấy nội dung của nó và đặt vào đây."
+        required: false nghĩa là Section Scripts không bắt buộc phải tồn tại trong trang con (view student index)
     *@
     @RenderSection("Scripts", required: false)
 
