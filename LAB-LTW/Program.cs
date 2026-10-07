@@ -27,7 +27,7 @@ app.MapControllerRoute(
 
 app.Run();
 
-// branch base on: lab1/main-route-uploadimage
+// branch base on: lab2/main-menuitem
 
 // 1. Tao 1 view MyLayout moi
 // 2. copy file index thay cho vao 
