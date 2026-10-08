@@ -43,7 +43,7 @@ app.MapControllerRoute(
 
 app.Run();
 
-// branch base on: lab4/main-codefirst-CRUD
+// branch base on: lab5/main-batdongbo
 
 // 1. Load du lieu dong bo
 // 2. Load du lieu bat dong bo
