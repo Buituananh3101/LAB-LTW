@@ -3,7 +3,7 @@
 <div class="container mt-4">
 
     @* <div asp-validation-summary="All" class="text-danger"></div> Lab3 *@
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*Lab3*@
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*Lab3 : Giải thích chi tiết thẻ này được đặt ở cuối file này*@
 
     @* ----------------------------------------------------------------------------------------------: Form gửi dữ liệu đi đâu? 
 
@@ -157,3 +157,10 @@
         </div>
     </form>
 </div>
+
+@* 
+  Ý nghĩa của TagHelper asp-validation-summary="ModelOnly":
+  1. CHỈ gom và hiển thị các Lỗi Chung (Model Errors) do server kiểm tra (VD: Sai thông tin đăng nhập, tài khoản bị khóa...).
+  2. KHÔNG hiển thị lỗi của từng ô riêng lẻ (Property Errors) vì các lỗi đó đã có thẻ <span> báo đỏ ngay bên dưới mỗi ô.
+  3. Khác biệt với "All": Dùng "ModelOnly" giúp giao diện gọn gàng, không bị chửi lặp 2 lần khi người dùng quên nhập một ô nào đó.
+*@
