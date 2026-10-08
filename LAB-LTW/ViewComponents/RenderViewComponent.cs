@@ -19,7 +19,8 @@ namespace LAB_LTW.ViewComponents
                 new MenuItem() { Id = 1, Name = "Trang chủ", Link = "/" },
                 new MenuItem() { Id = 3, Name = "Student", Link = "/Admin/Student/List" },
                 new MenuItem() { Id = 2, Name = "Add Student", Link = "/Admin/Student/Add" },
-                new MenuItem() { Id = 4, Name = "Learns", Link = "/Learner/Index" }
+                new MenuItem() { Id = 4, Name = "Learns", Link = "/Learner/Index" },
+                new MenuItem() { Id = 5, Name = "Add Learns", Link = "/Learner/Create" }
             };
         }
 
