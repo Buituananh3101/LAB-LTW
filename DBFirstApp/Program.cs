@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -34,6 +36,8 @@ app.Run();
 // Microsoft.EntityFrameworkCore.SqlServer 
 // Microsoft.EntityFrameworkCore.Design
 
+// Mẫu:
 // Scaffold-DbContext [-Connection] [-Provider] [-OutputDir] [-Context] [-Schemas>] [-Tables>] [-DataAnnotations] [-Force] [-Project] [-StartupProject] [<CommonParameters>]
-
-// Scaffold-DbContext "Data Source=(local);Initial Catalog=School;Persist Security Info=True;User ID=sa;Password=123123;" Microsoft.EntityFrameworkCore.SqlServer -Project DBFirstApp -OutputDir Models
+// Cài đặt:
+// Các lỗi hay dính: thừa dấu cách, data đã tồn tại, chưa khời động lại dự án
+// Scaffold-DbContext "Data Source=.\SQLEXPRESS;Initial Catalog=School;Persist Security Info=True;User ID=sa;Password=123123;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
