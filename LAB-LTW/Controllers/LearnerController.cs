@@ -135,6 +135,68 @@ namespace LAB_LTW.Controllers
             return (db.Learners?.Any(e => e.LearnerID == id)).GetValueOrDefault();
         }
 
+        //-------------------------------------------------------------------------------------------: Delete Learner
+
+        // 1. GET: Learner/Delete/5
+        // Action này chạy khi bạn bấm nút "Delete" trên danh sách. Nó kiểm tra điều kiện
+        // và hiển thị trang xác nhận thông tin trước khi thực sự xóa.
+        public IActionResult Delete(int id) // (Lưu ý:  để int? id tránh lỗi id == null)
+        {
+            // nếu không có ID truyền vào URL hoặc bảng Learners chưa được khởi tạo
+            if (id == null || db.Learners == null)
+            {
+                return NotFound(); // // Trả về trang lỗi 404 (Không tìm thấy)
+            }
+
+            // Truy vấn tìm học viên theo ID, dùng Include để tự động JOIN và lấy thêm thông tin Ngành học (Major) và các Khóa học đã đăng ký (Enrollments)
+            var learner = db.Learners.Include(l => l.Major)
+                .Include(e => e.Enrollments)
+                .FirstOrDefault(m => m.LearnerID == id);
+
+            // Nếu không tìm thấy học viên nào có ID tương ứng
+            if (learner == null)
+            {
+                return NotFound();
+            }
+
+            // KIỂM TRA RÀNG BUỘC: Nếu học viên này đã đăng ký ít nhất 1 khóa học (Enrollments > 0) --> chặn lại không cho xóa để bảo vệ toàn vẹn dữ liệu (tránh lỗi khóa ngoại).
+            if (learner.Enrollments.Count() > 0)
+            {
+                return Content("Thằng này đăng kí học rồi, ko được xóa để bảo vệ toàn vẹn dữ liệu!");
+            }
+
+            // Trả về View xác nhận xóa, hiển thị thông tin học viên để người dùng xem xét lần cuối
+            return View(learner);
+        }
+
+        // 2. POST: Learner/Delete/5
+        // Action này nhận dữ liệu khi người dùng bấm nút "Xác nhận xóa" từ form (nút Submit).
+        [HttpPost, ActionName("Delete")] // Mapping tên action: Dù tên hàm là DeleteConfirmed, nhưng URL vẫn gọi là "Delete"
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            // Kiểm tra an toàn xem bảng Learners có tồn tại không
+            if (db.Learners == null)
+            {
+                return Problem("Entity set 'Learners' is null.");
+            }
+
+            // Tìm bản ghi học viên cần xóa theo ID
+            var learner = db.Learners.Find(id);
+
+            // Nếu tìm thấy, gọi hàm Remove để đánh dấu bản ghi này sẽ bị xóa
+            if (learner != null)
+            {
+                db.Learners.Remove(learner);
+            }
+
+            // Lệnh này mới thực sự đẩy câu lệnh SQL DELETE xuống CSDL để xóa cứng dữ liệu
+            db.SaveChanges();
+
+            // Xóa xong thì chuyển hướng người dùng quay về trang danh sách (Action Index)
+            return RedirectToAction(nameof(Index));
+        }
+
         //-------------------------------------------------------------------------------------------:
     }
 

@@ -1,0 +1,74 @@
+﻿@{
+    // Cấu hình tiêu đề trang và chỉ định file Layout dùng chung
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/MyLayout.cshtml";
+}
+
+@model Learner
+
+<div class="ms-2 mx-2">
+    <h1>Delete</h1>
+    
+    <h3>Are you sure you want to delete this?</h3>
+    
+    <h4>Learner</h4>
+    <hr />
+    
+    @* Thẻ <dl> (Definition List) dùng để hiển thị dữ liệu theo dạng danh sách.
+       Trong Bootstrap, class "row" giúp chia danh sách này thành dạng lưới (grid) *@
+    <dl class="row">
+        
+        @* Thẻ <dt> (Data Term) hiển thị TÊN CỦA TRƯỜNG DỮ LIỆU.
+           @Html.DisplayNameFor: Tự động lấy tên thuộc tính (FirstMidName). Nếu trong Model bạn có dùng 
+           thêm [Display(Name="Tên")] thì nó sẽ tự động lấy chữ "Tên" ra đây. *@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstMidName)
+        </dt>
+        
+        @* Thẻ <dd> (Data Description) hiển thị GIÁ TRỊ THỰC TẾ của trường dữ liệu đó.
+           @Html.DisplayFor: In ra màn hình giá trị của FirstMidName (ví dụ: "Tuấn") *@
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstMidName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Major)
+        </dt>
+        <dd class="col-sm-10">
+            @* Chú ý: Ở đây gọi đích danh `model.Major.MajorName` để in ra Tên ngành học 
+               (VD: "IT") thay vì in ra toàn bộ object Major. *@
+            @Html.DisplayFor(model => model.Major.MajorName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EnrollmentDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EnrollmentDate)
+        </dd>
+    </dl>
+    
+    @* Form này sẽ gửi request (thường là POST) lên Action tên là "Delete" 
+       (tức là hàm DeleteConfirmed trong LearnerController mà bạn đã xem ở ảnh trước) *@
+    <form asp-action="Delete">
+        
+        @* TRƯỜNG QUAN TRỌNG NHẤT: Thẻ input ẩn chứa mã ID của Học viên.
+           Khi người dùng bấm Submit, hệ thống phải gom cái ID này gửi lên server thì 
+           Controller mới biết chính xác học viên nào đang bị yêu cầu xóa. *@
+        <input type="hidden" asp-for="LearnerID" />
+        
+        @* Nút Submit màu đỏ (btn-danger) để chính thức xác nhận lệnh xóa *@
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        
+        @* Đường link quay trở lại trang danh sách (Action Index) nếu người dùng đổi ý không xóa nữa *@
+        <a asp-action="Index">Back to List</a>
+        
+    </form>
+</div>
