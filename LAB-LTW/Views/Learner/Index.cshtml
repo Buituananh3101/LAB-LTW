@@ -5,6 +5,9 @@
 @model IEnumerable<Learner>
 <div class="ms-2 mx-2">
     <h1>Learner List</h1>
+
+    @await Component.InvokeAsync("Major")
+
     <table class="table table-striped">
         <thead>
             <tr>

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 namespace LAB_LTW.Controllers
 {
     public class LearnerController : Controller
@@ -13,10 +14,18 @@ namespace LAB_LTW.Controllers
             db = context;
         }
         //-------------------------------------------------------------------------------------------: List Learners
-        public IActionResult Index()
+        public IActionResult Index(int? mid)
         {
-            var learners = db.Learners.Include(m => m.Major).ToList(); // truy vấn lấy toàn bộ danh sách learners từ cơ sở dữ liệu, 
-            return View(learners);                                     // đồng thời tự động kết nối (JOIN) để lấy thêm thông tin về chuyên ngành của từng học viên.
+            if (mid == null)
+            {
+                var learners = db.Learners.Include(m => m.Major).ToList(); // truy vấn lấy toàn bộ danh sách learners từ cơ sở dữ liệu, 
+                return View(learners);                                     // đồng thời tự động kết nối (JOIN) để lấy thêm thông tin về chuyên ngành của từng học viên.
+            }
+            else
+            {
+                var learners = db.Learners.Where(l => l.MajorID == mid).Include(m => m.Major).ToList();
+                return View(learners);
+            }
         }
 
         //-------------------------------------------------------------------------------------------: Create Learner

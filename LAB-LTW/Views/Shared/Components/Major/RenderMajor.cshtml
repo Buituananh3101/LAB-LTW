@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Major>
+<ul class="nav">
+    @foreach(var m in Model)
+    {
+        <li class="nav-item">
+            @* 
+                Thẻ <a> tạo một đường link (nút bấm) cho mỗi ngành học:
+               - asp-controller="Learner": Bấm vào sẽ chuyển hướng đến LearnerController
+               - asp-action="Index": Gọi hàm Index để hiển thị danh sách học viên
+               - asp-route-mid="@m.MajorID": Tự động đính kèm ID của ngành học này lên thanh URL với tên biến là "mid". 
+                 (Ví dụ nếu ID là 1, URL sinh ra sẽ là: /Learner/Index?mid=1)
+               - @m.MajorName: Lấy tên của ngành học in ra màn hình để người dùng nhìn thấy (VD: "Công nghệ thông tin") 
+            *@
+            <a asp-controller="Learner" asp-action="Index" asp-route-mid="@m.MajorID" class="nav-link">@m.MajorName</a>
+        </li>
+    }
+</ul>
+
