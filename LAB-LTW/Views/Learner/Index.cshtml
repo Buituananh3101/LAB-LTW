@@ -5,30 +5,67 @@
 @model IEnumerable<Learner>
 <div class="ms-2 mx-2">
     <h1>Learner List</h1>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Mã</th>
-                <th>Tên</th>
-                <th>Họ</th>
-                <th>Ngành</th>
-                <th>Ngày Nhập Học</th>
-                <th>Chức năng</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var s in Model)
-            {
+
+
+    @* Gọi MajorViewComponent để vẽ ra thanh menu các Ngành học. 
+       Lưu ý ở bước trước, mỗi thẻ <li> của menu này đã được gán thuộc tính id = MajorID *@
+    @await Component.InvokeAsync("Major")
+
+
+    @* [ĐIỂM QUAN TRỌNG 1]: 
+       Bao bọc bảng dữ liệu bằng thẻ <div id="content">.
+       Đây giống như một "cái khung trống". Khi AJAX lấy được dữ liệu bảng học viên mới (đã lọc), 
+       nó sẽ đem nhét vào cái khung này để đè lên bảng cũ mà không cần f5 tải lại cả trang. *@
+    <div id="content">
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@s.LearnerID</td>
-                    <td>@s.FirstMidName</td>
-                    <td>@s.LastName</td>
-                    <td>@s.Major.MajorName</td>
-                    <td>@s.EnrollmentDate</td>
-                    <td> <a asp-action="Edit" asp-route-id="@s.LearnerID">Edit</a> | <a asp-action="Delete" asp-route-id="@s.LearnerID">Delete</a> </td>
+                    <th>Mã</th>
+                    <th>Tên</th>
+                    <th>Họ</th>
+                    <th>Ngành</th>
+                    <th>Ngày Nhập Học</th>
+                    <th>Chức năng</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td>@s.LearnerID</td>
+                        <td>@s.FirstMidName</td>
+                        <td>@s.LastName</td>
+                        <td>@s.Major.MajorName</td>
+                        <td>@s.EnrollmentDate</td>
+                        <td> <a asp-action="Edit" asp-route-id="@s.LearnerID">Edit</a> | <a asp-action="Delete" asp-route-id="@s.LearnerID">Delete</a> </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
     <a asp-action="Create" class="btn btn-primary">Create New Student</a>
 </div>
+
+@* [ĐIỂM QUAN TRỌNG 2]: 
+   @section Scripts dùng để nhúng mã JavaScript/jQuery vào đúng vị trí quy định dưới đáy trang. *@
+@section Scripts{
+    <script>
+        $("li").click(function (e) {     // Lắng nghe sự kiện click vào thẻ <li> (nút chọn ngành học)
+            
+            var id = $(this).attr("id"); // Lấy mã ngành (MajorID) từ thuộc tính id của thẻ <li> vừa bị bấm
+            
+            $.ajax({                     // Bắt đầu gọi AJAX để lấy dữ liệu ngầm từ Server
+                
+                url: "LearnerByMajorID", // Đường dẫn trỏ tới Action LearnerByMajorID trong Controller              // đường dẫn gửi request 
+                
+                data: { mid: id },       // Gửi mã ngành vừa lấy được lên server thông qua tham số tên là "mid"     // tham số sẽ được gửi kèm theo request lên Server
+                 
+                success: function (response) {       // Hàm thực thi khi Server trả về thành công đoạn HTML mới     // callback function khi nhận được response từ Server
+                    
+                    $("div#content").html(response); // Nhét toàn bộ bảng HTML mới (response) đè vào khung <div id="content">
+                }
+            });
+        });
+    </script>
+}

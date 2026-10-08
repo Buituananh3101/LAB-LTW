@@ -13,6 +13,13 @@ namespace LAB_LTW.Controllers
             db = context;
         }
         //-------------------------------------------------------------------------------------------: List Learners
+
+        public IActionResult LearnerByMajorID(int mid)
+        {
+            var learners = db.Learners.Where(l => l.MajorID == mid).Include(m => m.Major).ToList();
+            return PartialView("LearnerTable", learners);
+        }
+
         public IActionResult Index()
         {
             var learners = db.Learners.Include(m => m.Major).ToList(); // truy vấn lấy toàn bộ danh sách learners từ cơ sở dữ liệu, 
