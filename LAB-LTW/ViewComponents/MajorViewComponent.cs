@@ -41,4 +41,16 @@ namespace LAB_LTW.ViewComponents
    - Đón dữ liệu: AJAX báo 'success' và nhận về cục mã HTML (response) từ Server ném xuống.
    - Ghi đè giao diện: Dùng jQuery $("div#content").html(response) để bê nguyên cục HTML mới nhét đè vào khung bảng cũ.
    => KẾT QUẢ: Danh sách học viên được cập nhật mượt mà ngay trên trang hiện tại.
+
+
+
+    Tự giải thích: 
+    Ban đầu gọi contrller/action Learner/index --> gọi view Learner/index.
+        Trong view này, có gọi VC MajorViewComponent bằng "@await Component.InvokeAsync("Major")"
+        Trong MajorVC lấy majors từ CSLD + trả về view "RenderMajor" 
+        Trong view "RenderMajor" có render ra các thẻ <li> (Ngành học) trên thanh Menu, thẻ li có chứa mã ngành (id) của ngành học.
+    Tiếp theo khi đã có menu ngành học, trong view index thêm phần @section Scripts, trong này dùng jquey để bắt sự kiện click vào thẻ li.
+        lấy id ngành từ thẻ li rồi gọi action LearnerByMajorID, thằng này tìm leanrs rồi trả về PartialView LearnerTable
+        AJAX lấy cái PartialView LearnerTable đó vào thay vào khối content
+
 */
