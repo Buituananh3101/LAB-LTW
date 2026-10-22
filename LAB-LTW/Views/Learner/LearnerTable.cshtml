@@ -29,3 +29,21 @@
         }
     </tbody>
 </table>
+
+<!-- thêm thanh phân trang ở cuối-----------------------------------------------------------------------------------6.4 -->
+
+<!-- Vì AJAX thay toàn bộ div#content, 
+partial phải tự vẽ lại cả bảng lẫn thanh phân trang. 
+Nếu thiếu ul ở đây, 
+sau lần bấm đầu tiên thanh số trang sẽ biến mất. -->
+
+<ul class="pagination">
+    @for (int i = 1; i <= ViewBag.pageNum; i++)
+    {
+        <li class="page-item" page="@i"
+            @(ViewBag.mid != null ? "mid=" + ViewBag.mid : "")
+            @(ViewBag.keyword != null ? "keyword=" + ViewBag.keyword : "")>
+            <a class="page-link">@i</a>
+        </li>
+    }
+</ul>

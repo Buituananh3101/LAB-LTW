@@ -12,6 +12,18 @@
     @await Component.InvokeAsync("Major")
 
 
+    <!-- Form tìm kiếm -----------------------------------------------------------------------------------------------------------6.3.1 -->
+    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        <div class="input-group">
+            <input id="keyword" class="form-control" name="keyword"
+                   type="text" placeholder="Search learner" />
+            <button id="btnSearch" class="btn btn-primary" type="button">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
+
+
     @* [ĐIỂM QUAN TRỌNG 1]: 
        Bao bọc bảng dữ liệu bằng thẻ <div id="content">.
        Đây giống như một "cái khung trống". Khi AJAX lấy được dữ liệu bảng học viên mới (đã lọc), 
@@ -42,14 +54,31 @@
                 }
             </tbody>
         </table>
+
+        <!-- Thanh phân trang -----------------------------------------------------------------------------------------------------6.3.2 -->
+        <ul class="pagination">
+            @for (int i = 1; i <= ViewBag.pageNum; i++)
+            {
+                <li class="page-item" page="@i"
+                    @(ViewBag.mid != null ? "mid='ViewBag.mid'" : "")
+                    @(ViewBag.keyword != null ? "keyword='@ViewBag.keyword'" : "")>
+                    <a class="page-link">@i</a>
+                </li>
+            }
+        </ul>
+
     </div>
 
     <a asp-action="Create" class="btn btn-primary">Create New Student</a>
 </div>
 
+<!-- AJAX --------------------------------------------------------------------------------------------------------------------6.3.4 -->
+
+@* Tắt Srcipts cũ đi vì có thể gây lỗi*@
+
 @* [ĐIỂM QUAN TRỌNG 2]: 
    @section Scripts dùng để nhúng mã JavaScript/jQuery vào đúng vị trí quy định dưới đáy trang. *@
-@section Scripts{
+@* @section Scripts{
     <script>
         $("li").click(function (e) {     // Lắng nghe sự kiện click vào thẻ <li> (nút chọn ngành học)
             
@@ -67,5 +96,48 @@
                 }
             });
         });
+    </script>
+} *@
+
+
+<!-- AJAX --------------------------------------------------------------------------------------------------------------------6.3.3 -->
+@section Scripts {
+    <script>
+        //thêm script ajax cho click vào page-item, nút search
+           $('body').on('click', 'li.page-item', function (e) {
+               var page = $(this).attr("page");
+               var mid = $(this).attr("mid");
+               var keyword = $(this).attr("keyword");
+               var data = { mid: mid, keyword: keyword, pageIndex: page };
+               $.ajax({
+                   url: "LearnerFilter",
+                   data: data,
+                   success: function (response) {
+                       $("div#content").html(response);
+                   }
+               });
+           });
+           $(".nav li").click(function (e) {
+               var id = $(this).attr("id");
+               var data = { mid: id };
+               $.ajax({
+                   url: "LearnerFilter",
+                   data: data,
+                   success: function (response) {
+                       $("div#content").html(response);
+                   }
+               });
+           });
+           $("button#btnSearch").click(function (e) {
+               var keyword = $("#keyword").val();
+               var data = { keyword: keyword };
+               $.ajax({
+                   url: "LearnerFilter",
+                   data: data,
+                   success: function (response) {
+                       $("div#content").html(response);
+                   }
+               });
+           });
     </script>
 }

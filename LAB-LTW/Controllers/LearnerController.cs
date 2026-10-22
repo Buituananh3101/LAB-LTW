@@ -1,4 +1,5 @@
-﻿using LAB_LTW.Models;
+﻿using Azure;
+using LAB_LTW.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,64 @@ namespace LAB_LTW.Controllers
         {
             db = context;
         }
+
+        //-------------------------------------------------------------------------------------------: 6.1.1
+
+        //khai báo biến toàn cục pageSize
+        private int pageSize = 3;
+        public IActionResult Index(int? mid)
+        {
+            var learners = (IQueryable<Learner>)db.Learners
+                .Include(m => m.Major);
+            if (mid != null)
+            {
+                learners = (IQueryable<Learner>)db.Learners
+                    .Where(l => l.MajorID == mid)
+                    .Include(m => m.Major);
+            }
+            //tính số trang
+            int pageNum = (int)Math.Ceiling(learners.Count() / (float)pageSize);
+            //trả số trang về view để hiển thị nav-trang
+            ViewBag.pageNum = pageNum;
+            //lấy dữ liệu trang đầu
+            var result = learners.Take(pageSize).ToList();
+            return View(result);
+        }
+
+        //-------------------------------------------------------------------------------------------: 6.2
+        public IActionResult LearnerFilter(int? mid, string? keyword, int? pageIndex)
+        {
+            //lấy toàn bộ learners trong dbset chuyển về IQuerrable<Learner> để query
+            var learners = (IQueryable<Learner>)db.Learners;
+            //lấy chỉ số trang, nếu chỉ số trang null thì gán ngầm định bằng 1
+            int page = (int)(pageIndex == null || pageIndex <= 0 ? 1 : pageIndex);
+            //nếu có mid thì lọc learner theo mid (chuyên ngành)
+            if (mid != null)
+            {
+                //lọc
+                learners = learners.Where(l => l.MajorID == mid);
+                //gửi mid về view để ghi lại trên nav-phân trang
+                ViewBag.mid = mid;
+            }
+            //nếu có keyword thì tìm kiếm theo tên
+            if (keyword != null)
+            {
+                //tìm kiếm
+                learners = learners.Where(l => l.FirstMidName.ToLower()
+                                .Contains(keyword.ToLower()));
+                //gửi keyword về view để ghi lại trên nav-phân trang
+                ViewBag.keyword = keyword;
+            }
+            //tính số trang
+            int pageNum = (int)Math.Ceiling(learners.Count() / (float)pageSize);
+            //gửi số trang về view để hiển thị nav-trang
+            ViewBag.pageNum = pageNum;
+            //chọn dữ liệu trong trang hiện tại
+            var result = learners.Skip(pageSize * (page - 1))
+                                 .Take(pageSize).Include(m => m.Major);
+            return PartialView("LearnerTable", result);
+        }
+
         //-------------------------------------------------------------------------------------------: List Learners
 
         public IActionResult LearnerByMajorID(int mid)
@@ -19,12 +78,15 @@ namespace LAB_LTW.Controllers
             var learners = db.Learners.Where(l => l.MajorID == mid).Include(m => m.Major).ToList();
             return PartialView("LearnerTable", learners);
         }
+        //-------------------------------------------------------------------------------------------: 6.1.2
+        
+        // Tắt index mặc định đi
 
-        public IActionResult Index()
-        {
-            var learners = db.Learners.Include(m => m.Major).ToList(); // truy vấn lấy toàn bộ danh sách learners từ cơ sở dữ liệu, 
-            return View(learners);                                     // đồng thời tự động kết nối (JOIN) để lấy thêm thông tin về chuyên ngành của từng học viên.
-        }
+        //public IActionResult Index()
+        //{
+        //    var learners = db.Learners.Include(m => m.Major).ToList(); // truy vấn lấy toàn bộ danh sách learners từ cơ sở dữ liệu, 
+        //    return View(learners);                                     // đồng thời tự động kết nối (JOIN) để lấy thêm thông tin về chuyên ngành của từng học viên.
+        //}
 
         //-------------------------------------------------------------------------------------------: Create Learner
 
@@ -209,85 +271,36 @@ namespace LAB_LTW.Controllers
 
 }
 
-/* ============================================================================
-   LUỒNG HOẠT ĐỘNG: CREATE - UPDATE - DELETE (ASP.NET CORE MVC & EF CORE)
-============================================================================ */
 
-/* ----------------------------------------------------------------------------
-   1. LUỒNG CREATE (THÊM MỚI DỮ LIỆU)
-----------------------------------------------------------------------------
-   [Người dùng] Click "Create New Student" 
-   => [Trình duyệt] Gửi request GET tới url: /Learner/Create
-   
-   => [Controller] Tiếp nhận tại Action: Create() (GET)
-        -> Lấy danh sách Ngành học (Majors) từ CSDL nạp vào ViewBag.MajorID
-        -> Trả về View(Create.cshtml)
-        
-   => [View] Hiển thị Form nhập liệu trống cho người dùng
-   
-   [Người dùng] Điền thông tin (Tên, ngày nhập học...) -> Bấm "Submit"
-   => [Trình duyệt] Gôm dữ liệu Form -> Gửi request POST tới /Learner/Create
-   
-   => [Controller] Tiếp nhận tại Action: Create(Learner learner) (POST)
-        -> Kiểm tra tính hợp lệ (ModelState.IsValid)
-        -> db.Learners.Add(learner); // Đưa đối tượng vào hàng đợi thêm mới
-        -> db.SaveChanges();         // Kích hoạt lưu trữ
-        
-   => [EF Core] Dịch ra lệnh SQL: INSERT INTO Learners... => Chạy dưới CSDL
-   
-   => [Controller] RedirectToAction("Index") => Quay về trang danh sách.
-*/
+// Giai đoạn 1: Tải trang lần đầu
 
+//Trình duyệt          Controller(Index)                  View Index.cshtml
+//    │  GET /Learner/Index   │                                  │
+//    │──────────────────────>│                                  │
+//    │                       │ 1. Tạo truy vấn IQueryable       │
+//    │                       │ 2. Count() → tính pageNum        │
+//    │                       │ 3. Take(3).ToList() → 3 dòng đầu │
+//    │                       │ 4. ViewBag.pageNum = pageNum     │
+//    │                       │─────────────────────────────────>│
+//    │                       │                                  │ vẽ: menu ngành, ô tìm kiếm,
+//    │                       │                                  │ bảng 3 dòng, thanh số trang 1..pageNum
+//    │<──────────────────────────────────────────────────────── │
+//    │  nhận trang HTML đầy đủ (kèm script jQuery)
 
-/* ----------------------------------------------------------------------------
-   2. LUỒNG UPDATE (CẬP NHẬT/SỬA DỮ LIỆU)
-----------------------------------------------------------------------------
-   [Người dùng] Click "Edit" tại dòng của học viên có ID = 5 
-   => [Trình duyệt] Gửi request GET tới url: /Learner/Edit/5
-   
-   => [Controller] Tiếp nhận tại Action: Edit(int id) (GET)
-        -> db.Learners.Find(id) // Truy vấn CSDL tìm học viên có ID = 5
-        -> Lấy danh sách Ngành nạp vào ViewBag (chọn sẵn ngành hiện tại)
-        -> Trả về View(learner) // Truyền đối tượng cũ sang View
-        
-   => [View] Hiển thị Form chứa sẵn dữ liệu cũ (có thẻ <input type="hidden" id="5">)
-   
-   [Người dùng] Sửa thông tin -> Bấm "Submit"
-   => [Trình duyệt] Gửi request POST kèm đối tượng có dữ liệu mới tới /Learner/Edit/5
-   
-   => [Controller] Tiếp nhận tại Action: Edit(int id, Learner learner) (POST)
-        -> So sánh ID trên URL và ID trong đối tượng gửi lên xem có khớp không
-        -> db.Update(learner); // Đánh dấu đối tượng này đã bị thay đổi
-        -> db.SaveChanges();
-        
-   => [EF Core] Dịch ra lệnh SQL: UPDATE Learners SET... WHERE ID = 5 => Chạy dưới CSDL
-   
-   => [Controller] RedirectToAction("Index") => Quay về trang danh sách.
-*/
+// Giai đoạn 2: Mỗi lần bấm (AJAX)
 
-
-/* ----------------------------------------------------------------------------
-   3. LUỒNG DELETE (XÓA DỮ LIỆU)
-----------------------------------------------------------------------------
-   [Người dùng] Click "Delete" tại dòng của học viên có ID = 5
-   => [Trình duyệt] Gửi request GET tới url: /Learner/Delete/5
-   
-   => [Controller] Tiếp nhận tại Action: Delete(int id) (GET)
-        -> Tìm học viên kèm dữ liệu liên kết (Include Majors, Enrollments...)
-        -> Kiểm tra nghiệp vụ (VD: Đã có điểm thì chặn không cho xóa)
-        -> Nếu hợp lệ, trả về View(learner)
-        
-   => [View] Hiển thị trang Xác nhận (chỉ xem, không sửa) hỏi "Are you sure?"
-   
-   [Người dùng] Bấm nút "Delete" (màu đỏ)
-   => [Trình duyệt] Form submit request POST kèm hidden ID tới /Learner/Delete/5
-   
-   => [Controller] Tiếp nhận tại Action: DeleteConfirmed(int id) (POST)
-        -> db.Learners.Find(id); // Tìm lại học viên 1 lần nữa cho chắc
-        -> db.Learners.Remove(learner); // Đánh dấu đối tượng sẽ bị xóa
-        -> db.SaveChanges();
-        
-   => [EF Core] Dịch ra lệnh SQL: DELETE FROM Learners WHERE ID = 5 => Chạy dưới CSDL
-   
-   => [Controller] RedirectToAction("Index") => Quay về trang danh sách.
-*/
+//Người dùng bấm  →  jQuery thu thập dữ liệu  →  $.ajax gọi LearnerFilter
+//                                                      │
+//                                                      ▼
+//                                       Action LearnerFilter (Controller)
+//                                       - lọc theo mid (nếu có)
+//                                       - tìm theo keyword (nếu có)
+//                                       - tính lại pageNum
+//                                       - Skip/Take lấy đúng trang
+//                                       - return PartialView("LearnerTable", result)
+//                                                      │
+//                                                      ▼
+//                                   Server trả về đoạn HTML (bảng + thanh phân trang)
+//                                                      │
+//                                                      ▼
+//                          success: $("div#content").html(response)  → thay nội dung, KHÔNG tải lại trang
