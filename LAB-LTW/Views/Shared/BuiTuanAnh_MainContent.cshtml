@@ -1,9 +1,9 @@
-@model IEnumerable<LAB_LTW.Models.HangHoa>
+﻿@model IEnumerable<LAB_LTW.Models.HangHoa>
 
-<!-- [1.1.3]: Tách MainContent theo quy định BuiTuanAnh_MainContent -->
+<!-- 1.1.3: Tách MainContent theo quy định BuiTuanAnh_MainContent -->
 <div class="content_top">
     <div class="heading">
-        <!-- [3.1.2]: Tiêu đề thay bằng tên SV: BÙI TUẤN ANH -->
+        <!-- 3.1.2: Tiêu đề thay bằng tên SV: BÙI TUẤN ANH -->
         <h3>BÙI TUẤN ANH</h3>
     </div>
     <div class="see">
@@ -13,7 +13,7 @@
 </div>
 
 <div class="section group">
-    <!-- [3.1.3]: Render danh sách sản phẩm giá >= 100 -->
+    <!-- 3.1.3: Render danh sách sản phẩm giá >= 100 -->
     @foreach (var item in Model)
     {
         <div class="grid_1_of_4 images_1_of_4">
