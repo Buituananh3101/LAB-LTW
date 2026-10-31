@@ -1,4 +1,4 @@
-﻿using LAB_LTW.Models;
+using LAB_LTW.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -13,14 +13,14 @@ namespace LAB_LTW.Controllers
             db = context;
         }
 
-        // 3.1.1: Load HangHoa có Giá >= 100
+        // 3.1.1: Load HangHoa có Giá >= 100 (Views/Shared/BuiTuanAnh_MainContent.cshtml - 7)
         public IActionResult Index()
         {
             var data = db.HangHoas.Where(h => h.Gia >= 100).ToList();
             return View(data);
         }
 
-        // 4.1.1: Lọc HangHoa theo MaLoai bằng AJAX
+        // 4.1.1: Lọc HangHoa theo MaLoai bằng AJAX (Views/Shared/BuiTuanAnh_Layout.cshtml - 25)
         public IActionResult GetHangHoaByLoai(int maloai)
         {
             var data = db.HangHoas.Where(h => h.Gia >= 100);
@@ -28,14 +28,14 @@ namespace LAB_LTW.Controllers
             return PartialView("BuiTuanAnh_MainContent", data.ToList());
         }
 
-        // 5.1.1: GET - Form thêm hàng hóa mới
+        // 5.1.1: GET - Form thêm hàng hóa mới (Views/Home/Create.cshtml - 3)
         public IActionResult Create()
         {
             ViewBag.MaLoai = new SelectList(db.LoaiHangs, "MaLoai", "TenLoai");
             return View();
         }
 
-        // 5.1.3: POST - Lưu hàng hóa mới
+        // 5.1.3: POST - Lưu hàng hóa mới (Models/HangHoa.cs - 16)
         [HttpPost]
         public IActionResult Create(HangHoa h)
         {

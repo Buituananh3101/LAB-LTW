@@ -1,18 +1,16 @@
-﻿using LAB_LTW.Models;
+using LAB_LTW.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// 2.1.2: Đăng ký DbContext LTWQLHangHoaContext vào DI container
+// 2.1.2: Đăng ký LTWQLHangHoaContext vào DI container (Models/LoaiHang.cs - 6)
 builder.Services.AddDbContext<LTWQLHangHoaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LTWQLHangHoaContext")));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
