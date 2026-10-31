@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// [2.1.2]: Đăng ký DbContext LTWQLHangHoaContext vào DI container
 builder.Services.AddDbContext<LTWQLHangHoaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LTWQLHangHoaContext")));
 

@@ -1,64 +1,42 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>@ViewData["Title"] - BuiTuanAnh_241230653</title>
+    <title>BuiTuanAnh_241230653</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <!-- Câu 1.2: Ghép các thư mục tài nguyên (css, js, images) vào dự án -->
+    <!-- [1.2.1]: Ghép CSS từ wwwroot -->
     <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="~/css/slider.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="~/css/easy-responsive-tabs.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="~/css/global.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body>
-    <!-- Begin Wrap -->
     <div class="wrap">
-        <!-- Câu 1.1: Render Header theo tên quy định BuiTuanAnh_Header -->
+        <!-- [1.1.1]: Render Header -->
         @await Html.PartialAsync("BuiTuanAnh_Header")
 
-        <!-- Begin Main -->
         <div class="main">
+            <!-- [1.1.4]: Render Body -->
             @RenderBody()
         </div>
-        <!-- End Main -->
     </div>
-    <!-- End Wrap -->
 
-    <!-- Câu 1.1: Render Footer theo tên quy định BuiTuanAnh_Footer -->
+    <!-- [1.1.2]: Render Footer -->
     @await Html.PartialAsync("BuiTuanAnh_Footer")
 
-    <!-- Scripts -->
+    <!-- [1.2.2]: Thư viện jQuery -->
     <script src="~/js/jquery-1.7.2.min.js"></script>
-    <script src="~/js/move-top.js"></script>
-    <script src="~/js/easing.js"></script>
-    <script src="~/js/startstop-slider.js"></script>
 
-    <!-- Câu 4: Xử lý AJAX khi bấm vào các mục trong thanh điều hướng để lọc danh sách Hàng Hóa -->
+    <!-- [4.1.2]: AJAX lọc danh sách hàng hóa ngắn nhất -->
     <script>
-        $(document).ready(function () {
-            $(document).on('click', '.nav-item-category', function (e) {
-                e.preventDefault();
-                $('.nav-item-category').removeClass('active');
-                $(this).addClass('active');
+        $(document).on('click', '.nav-item-category', function (e) {
+            e.preventDefault();
+            $('.nav-item-category').removeClass('active');
+            $(this).addClass('active');
 
-                var maloai = $(this).data('maloai');
-
-                $.ajax({
-                    url: '@Url.Action("GetHangHoaByLoai", "Home")',
-                    type: 'GET',
-                    data: { maloai: maloai },
-                    success: function (data) {
-                        $('#mainContent').html(data);
-                    },
-                    error: function (xhr) {
-                        console.error("Lỗi AJAX: " + xhr.responseText);
-                    }
-                });
+            var id = $(this).data('maloai');
+            $.get('/Home/GetHangHoaByLoai', { maloai: id }, function (data) {
+                $('#mainContent').html(data);
             });
         });
     </script>
-
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

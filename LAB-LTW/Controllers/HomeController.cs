@@ -1,78 +1,52 @@
 using LAB_LTW.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace LAB_LTW.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly LTWQLHangHoaContext db;
+        private LTWQLHangHoaContext db;
 
         public HomeController(LTWQLHangHoaContext context)
         {
             db = context;
         }
 
-        // Câu 3: Load dữ liệu từ bảng HangHoa có giá trị thuộc tính gia >= 100
+        // [3.1.1]: Load HangHoa có Giá >= 100
         public IActionResult Index()
         {
-            var hangHoas = db.HangHoas
-                             .Include(h => h.LoaiHang)
-                             .Where(h => h.Gia >= 100)
-                             .ToList();
-
-            return View(hangHoas);
+            var data = db.HangHoas.Where(h => h.Gia >= 100).ToList();
+            return View(data);
         }
 
-        // Câu 4: Lọc danh sách HangHoa theo loại và trả về qua AJAX
-        public IActionResult GetHangHoaByLoai(int? maloai)
+        // [4.1.1]: Lọc HangHoa theo MaLoai bằng AJAX
+        public IActionResult GetHangHoaByLoai(int maloai)
         {
-            var query = db.HangHoas.Include(h => h.LoaiHang).Where(h => h.Gia >= 100);
-
-            if (maloai != null && maloai > 0)
-            {
-                query = query.Where(h => h.MaLoai == maloai);
-            }
-
-            var result = query.ToList();
-            return PartialView("BuiTuanAnh_MainContent", result);
+            var data = db.HangHoas.Where(h => h.Gia >= 100);
+            if (maloai > 0) data = data.Where(h => h.MaLoai == maloai);
+            return PartialView("BuiTuanAnh_MainContent", data.ToList());
         }
 
-        // Câu 5.1: Xây dựng chức năng Thêm Hàng Hóa mới (GET)
-        [HttpGet]
+        // [5.1.1]: GET - Form thêm hàng hóa mới
         public IActionResult Create()
         {
-            ViewBag.MaLoai = new SelectList(db.LoaiHangs.ToList(), "MaLoai", "TenLoai");
+            ViewBag.MaLoai = new SelectList(db.LoaiHangs, "MaLoai", "TenLoai");
             return View();
         }
 
-        // Câu 5.1 & 5.2: Xây dựng chức năng Thêm Hàng Hóa mới và validate (POST)
+        // [5.1.3]: POST - Lưu hàng hóa mới
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(HangHoa hangHoa)
+        public IActionResult Create(HangHoa h)
         {
             if (ModelState.IsValid)
             {
-                db.HangHoas.Add(hangHoa);
+                db.HangHoas.Add(h);
                 db.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
-
-            ViewBag.MaLoai = new SelectList(db.LoaiHangs.ToList(), "MaLoai", "TenLoai", hangHoa.MaLoai);
-            return View(hangHoa);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            ViewBag.MaLoai = new SelectList(db.LoaiHangs, "MaLoai", "TenLoai");
+            return View(h);
         }
     }
 }
