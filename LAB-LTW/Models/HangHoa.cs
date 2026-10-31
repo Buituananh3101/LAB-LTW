@@ -12,7 +12,7 @@ namespace LAB_LTW.Models
         public int MaLoai { get; set; }
         public string TenHang { get; set; }
 
-        // 5.2.1: Giá là số trong khoảng 100 đến 5000 (x - 20)
+        // 5.2.1: Giá là số trong khoảng 100 đến 5000 (x - 19)
         [Range(100, 5000, ErrorMessage = "Giá phải là số từ 100 đến 5000")]
         public decimal? Gia { get; set; }
 

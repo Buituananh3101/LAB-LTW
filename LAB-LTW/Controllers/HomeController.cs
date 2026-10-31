@@ -13,14 +13,14 @@ namespace LAB_LTW.Controllers
             db = context;
         }
 
-        // 3.1.1: Load HangHoa có Giá >= 100 (Views/Shared/BuiTuanAnh_MainContent.cshtml - 7)
+        // 3.1.1: Load HangHoa có Giá >= 100 (Views/Shared/BuiTuanAnh_MainContent.cshtml - 6)
         public IActionResult Index()
         {
             var data = db.HangHoas.Where(h => h.Gia >= 100).ToList();
             return View(data);
         }
 
-        // 4.1.1: Lọc HangHoa theo MaLoai bằng AJAX (Views/Shared/BuiTuanAnh_Layout.cshtml - 25)
+        // 4.1.1: Lọc HangHoa theo MaLoai bằng AJAX (Views/Shared/BuiTuanAnh_Layout.cshtml - 28)
         public IActionResult GetHangHoaByLoai(int maloai)
         {
             var data = db.HangHoas.Where(h => h.Gia >= 100);
@@ -35,7 +35,7 @@ namespace LAB_LTW.Controllers
             return View();
         }
 
-        // 5.1.3: POST - Lưu hàng hóa mới (Models/HangHoa.cs - 16)
+        // 5.1.3: POST - Lưu hàng hóa mới (Models/HangHoa.cs - 15)
         [HttpPost]
         public IActionResult Create(HangHoa h)
         {

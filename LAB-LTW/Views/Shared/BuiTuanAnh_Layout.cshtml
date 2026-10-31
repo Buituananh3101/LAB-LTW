@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <!-- 1.2.1: Ghép CSS từ wwwroot (x - 22) -->
+    <!-- 1.2.1: Ghép CSS từ wwwroot (x - 25) -->
     <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body>
@@ -14,7 +14,7 @@
         @await Html.PartialAsync("BuiTuanAnh_Header")
 
         <div class="main">
-            <!-- 1.1.4: Render Body nội dung động của trang (x - 7) -->
+            <!-- 1.1.4: Render Body nội dung động của trang (x - 8) -->
             @RenderBody()
         </div>
     </div>
@@ -25,7 +25,7 @@
     <!-- 1.2.2: Thư viện jQuery từ wwwroot (appsettings.json - 3) -->
     <script src="~/js/jquery-1.7.2.min.js"></script>
 
-    <!-- 4.1.2: AJAX lọc danh sách hàng hóa ngắn nhất (Controllers/HomeController.cs - 32) -->
+    <!-- 4.1.2: AJAX lọc danh sách hàng hóa ngắn nhất (Controllers/HomeController.cs - 31) -->
     <script>
         $(document).on('click', '.nav-item-category', function (e) {
             e.preventDefault();
