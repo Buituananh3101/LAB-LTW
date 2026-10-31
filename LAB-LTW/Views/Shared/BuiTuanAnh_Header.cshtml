@@ -1,5 +1,3 @@
-@inject LAB_LTW.Models.LTWQLHangHoaContext db
-
 <!-- 1.1.1: Tách Header theo quy định BuiTuanAnh_Header (Views/Shared/BuiTuanAnh_Footer.cshtml - 1) -->
 <div class="header">
     <div class="header_top">
@@ -15,21 +13,8 @@
     </div>
     <div class="header_bottom">
         <div class="menu">
-            <ul>
-                <!-- 2.2.2: Menu Home thay bằng họ tên sinh viên BÙI TUẤN ANH (x - 24) -->
-                <li class="active nav-item-category" data-maloai="0">
-                    <a href="javascript:void(0);">BÙI TUẤN ANH</a>
-                </li>
-
-                <!-- 2.2.3: Load LoaiHang từ CSDL lên menu điều hướng (Controllers/HomeController.cs - 16) -->
-                @foreach (var item in db.LoaiHangs)
-                {
-                    <li class="nav-item-category" data-maloai="@item.MaLoai">
-                        <a href="javascript:void(0);">@item.TenLoai</a>
-                    </li>
-                }
-                <div class="clear"></div>
-            </ul>
+            <!-- Gọi ViewComponent nạp LoaiHang theo chuẩn MVC -->
+            @await Component.InvokeAsync("Navbar")
         </div>
         <div class="search_box">
             <form onsubmit="return false;">

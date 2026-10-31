@@ -1,0 +1,17 @@
+@model IEnumerable<LAB_LTW.Models.LoaiHang>
+
+<ul>
+    <!-- 2.2.2: Menu Home thay bằng họ tên sinh viên BÙI TUẤN ANH (x - 9) -->
+    <li class="active nav-item-category" data-maloai="0">
+        <a href="javascript:void(0);">BÙI TUẤN ANH</a>
+    </li>
+
+    <!-- 2.2.3: Load LoaiHang từ CSDL lên menu điều hướng (Controllers/HomeController.cs - 16) -->
+    @foreach (var item in Model)
+    {
+        <li class="nav-item-category" data-maloai="@item.MaLoai">
+            <a href="javascript:void(0);">@item.TenLoai</a>
+        </li>
+    }
+    <div class="clear"></div>
+</ul>
