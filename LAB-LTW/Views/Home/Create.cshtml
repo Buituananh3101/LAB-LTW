@@ -1,0 +1,53 @@
+@model LAB_LTW.Models.HangHoa
+@{
+    ViewData["Title"] = "Thêm Hàng Hóa Mới - Bùi Tuấn Anh 241230653";
+}
+
+<div class="content" style="padding: 20px 0; min-height: 450px;">
+    <!-- Tiêu đề theo mẫu đề thi -->
+    <h2 style="color: #B81D22; margin-bottom: 5px; font-family: 'ambleregular'; font-size: 1.5em;">Bùi Tuấn Anh</h2>
+    <h3 style="font-size: 1.2em; margin-bottom: 25px; color: #333;">Thêm Hàng Hóa Mới</h3>
+
+    <form asp-action="Create" method="post" style="max-width: 450px;">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger" style="color: red; margin-bottom: 15px;"></div>
+
+        <!-- Trường MaLoai (Dropdown) -->
+        <div style="margin-bottom: 15px;">
+            <label asp-for="MaLoai" style="display: block; font-weight: bold; margin-bottom: 5px; color: #444;">MaLoai</label>
+            <select asp-for="MaLoai" asp-items="ViewBag.MaLoai" style="width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 3px; font-size: 1em;"></select>
+            <span asp-validation-for="MaLoai" class="text-danger" style="color: red; font-size: 0.85em; display: block; margin-top: 4px;"></span>
+        </div>
+
+        <!-- Trường TenHang -->
+        <div style="margin-bottom: 15px;">
+            <label asp-for="TenHang" style="display: block; font-weight: bold; margin-bottom: 5px; color: #444;">TenHang</label>
+            <input asp-for="TenHang" type="text" style="width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 3px; font-size: 1em;" placeholder="Nhập tên hàng hóa" />
+            <span asp-validation-for="TenHang" class="text-danger" style="color: red; font-size: 0.85em; display: block; margin-top: 4px;"></span>
+        </div>
+
+        <!-- Trường Gia (Câu 5.2: Validate số 100 - 5000) -->
+        <div style="margin-bottom: 15px;">
+            <label asp-for="Gia" style="display: block; font-weight: bold; margin-bottom: 5px; color: #444;">Gia</label>
+            <input asp-for="Gia" type="number" step="1" style="width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 3px; font-size: 1em;" placeholder="Nhập giá từ 100 đến 5000" />
+            <span asp-validation-for="Gia" class="text-danger" style="color: red; font-size: 0.85em; display: block; margin-top: 4px;"></span>
+        </div>
+
+        <!-- Trường Anh (Câu 5.2: Validate đuôi .jpg | .png | .gif | .tiff) -->
+        <div style="margin-bottom: 15px;">
+            <label asp-for="Anh" style="display: block; font-weight: bold; margin-bottom: 5px; color: #444;">Anh</label>
+            <input asp-for="Anh" type="text" style="width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 3px; font-size: 1em;" placeholder="Ví dụ: Img_1.jpg hoặc sanpham.png" />
+            <span asp-validation-for="Anh" class="text-danger" style="color: red; font-size: 0.85em; display: block; margin-top: 4px;"></span>
+        </div>
+
+        <!-- Nút Create và Link quay lại -->
+        <div style="margin-top: 25px;">
+            <input type="submit" value="Create" style="background: #e0e0e0; color: #333; padding: 7px 20px; border: 1px solid #aaa; border-radius: 3px; cursor: pointer; font-size: 0.95em;" />
+            <a asp-action="Index" style="margin-left: 15px; color: #B81D22; text-decoration: underline; font-size: 0.95em;">Quay lại danh sách</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

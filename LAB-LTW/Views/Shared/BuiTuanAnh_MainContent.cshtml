@@ -1,0 +1,47 @@
+@model IEnumerable<LAB_LTW.Models.HangHoa>
+
+<!-- Begin Main Content: BuiTuanAnh_MainContent -->
+<div class="content_top">
+    <div class="heading">
+        <!-- Câu 3: Tiêu đề được thay thế bằng họ tên sinh viên -->
+        <h3>BÙI TUẤN ANH</h3>
+    </div>
+    <div class="see">
+        <p>
+            <a asp-controller="Home" asp-action="Create" style="color: #B81D22; font-weight: bold;">+ Thêm Hàng Hóa Mới</a> | 
+            <a href="#">See all Products</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div class="section group">
+    @if (!Model.Any())
+    {
+        <div style="padding: 30px; text-align: center; color: #777; font-size: 1.1em;">
+            <p>Không có sản phẩm nào thuộc loại này có giá >= 100.</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            <div class="grid_1_of_4 images_1_of_4">
+                <a href="javascript:void(0);">
+                    <img src="~/images/@item.Anh" alt="@item.TenHang" onerror="this.src='/images/feature-pic1.jpg';" />
+                </a>
+                <h2>@item.TenHang</h2>
+                <div class="price-details">
+                    <div class="price-number">
+                        <p><span class="rupees">@item.Gia</span></p>
+                    </div>
+                    <div class="add-cart">								
+                        <h4><a href="javascript:void(0);">Add to Cart</a></h4>
+                    </div>
+                    <div class="clear"></div>
+                </div>					 
+            </div>
+        }
+    }
+</div>
+<!-- End Main Content: BuiTuanAnh_MainContent -->

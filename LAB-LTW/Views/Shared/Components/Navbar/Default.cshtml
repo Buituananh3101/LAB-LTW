@@ -1,0 +1,14 @@
+@model IEnumerable<LAB_LTW.Models.LoaiHang>
+
+<ul>
+    <li class="active nav-item-category" data-maloai="0">
+        <a href="javascript:void(0);">BÙI TUẤN ANH</a>
+    </li>
+    @foreach (var item in Model)
+    {
+        <li class="nav-item-category" data-maloai="@item.MaLoai">
+            <a href="javascript:void(0);">@item.TenLoai</a>
+        </li>
+    }
+    <div class="clear"></div>
+</ul>
